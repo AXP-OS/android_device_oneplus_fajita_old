@@ -52,3 +52,6 @@ $(call inherit-product, device/oneplus/sdm845-common/common.mk)
 
 # Inherit from vendor blobs
 $(call inherit-product, vendor/oneplus/fajita/fajita-vendor.mk)
+
+# enable AXP.OS vendor
+$(call inherit-product, vendor/axp/config/common.mk)
