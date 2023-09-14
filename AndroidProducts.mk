@@ -17,6 +17,6 @@
 #
 
 PRODUCT_MAKEFILES := \
-     $(LOCAL_DIR)/twrp_OP6xT.mk
+     $(LOCAL_DIR)/twrp_fajita.mk
 
-COMMON_LUNCH_CHOICES := twrp_OP6xT-eng
+COMMON_LUNCH_CHOICES := twrp_fajita-eng
