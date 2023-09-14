@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-DEVICE_PATH := device/oneplus/OP6xT
+DEVICE_PATH := device/oneplus/fajita
 
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
@@ -111,14 +111,18 @@ TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/system/etc/recovery.fstab
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 
-# Crypto
+# enforce vintf manifest
+PRODUCT_ENFORCE_VINTF_MANIFEST := true
+
+# Encryption
+PLATFORM_VERSION := 13
+PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
+PLATFORM_SECURITY_PATCH := 2099-12-31
+VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-BOARD_SUPPRESS_SECURE_ERASE := true
-PLATFORM_VERSION := 127
-#PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
-PLATFORM_SECURITY_PATCH := 2127-12-31
-VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+TW_EXCLUDE_ENCRYPTED_BACKUPS := false
 
 # TWRP specific build flags
 TW_THEME := portrait_hdpi
@@ -147,9 +151,29 @@ TW_INCLUDE_FUSE_NTFS := true
 TW_OVERRIDE_SYSTEM_PROPS := \
     "ro.bootimage.build.date.utc=ro.build.date.utc;ro.build.date.utc;ro.odm.build.date.utc=ro.build.date.utc;ro.product.build.date.utc=ro.build.date.utc;ro.system.build.date.utc=ro.build.date.utc;ro.system_ext.build.date.utc=ro.build.date.utc;ro.vendor.build.date.utc=ro.build.date.utc;ro.build.product;ro.build.fingerprint=ro.system.build.fingerprint;ro.build.version.incremental;ro.product.name=ro.product.system.name"
 
+TARGET_RECOVERY_DEVICE_MODULES += \
+    libcap \
+    libion \
+    libxml2 \
+    vendor.display.config@1.0.so \
+    vendor.display.config@2.0.so
+
+TW_RECOVERY_ADDITIONAL_RELINK_LIBRARY_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libcap.so \
+
+RECOVERY_LIBRARY_SOURCE_FILES += \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libion.so \
+    $(TARGET_OUT_SHARED_LIBRARIES)/libxml2.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@1.0.so \
+    $(TARGET_OUT_SYSTEM_EXT_SHARED_LIBRARIES)/vendor.display.config@2.0.so
+
 # Debug flags
 TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 
-
-PRODUCT_ENFORCE_VINTF_MANIFEST := true
+# deeper debug options
+TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
+TARGET_RECOVERY_DEVICE_MODULES += debuggerd
+TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd
+TARGET_RECOVERY_DEVICE_MODULES += strace
+RECOVERY_BINARY_SOURCE_FILES += $(TARGET_OUT_EXECUTABLES)/strace
