@@ -43,6 +43,7 @@ on property:init.svc.adbd=stopped
     setprop sys.usb.ffs.ready 0
 
 on property:sys.usb.config=adb && property:sys.usb.configfs=1
+    setprop sys.usb.config "mtp,adb"
     start adbd
 
 on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb && property:sys.usb.configfs=1
