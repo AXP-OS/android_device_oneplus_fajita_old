@@ -1,7 +1,5 @@
 # Device Tree for OnePlus 6T (fajita)
 
-FBEv2 support ONLY! That means your OS must have FBEv2 enabled - otherwise it will not be possible to decrypt it.
-
 The OnePlus 6T (codenamed _"fajita"_) is a flagship smartphone from OnePlus.
 It was released in Novemeber 2018.
 
