@@ -31,6 +31,8 @@ TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
 # pub key (avb_pkmd.bin) must be flashed to avb_custom_key partition
 # see https://github.com/AXP-OS/build/wiki/Bootloader-Lock
 BOARD_AVB_KEY_PATH := user-keys/avb.pem
+BOARD_AVB_ALGORITHM := SHA512_RSA4096
+BOARD_AVB_BOOT_ALGORITHM := $(BOARD_AVB_ALGORITHM)
 
 # inherit from the proprietary version
 -include vendor/oneplus/fajita/BoardConfigVendor.mk
